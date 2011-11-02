@@ -7,6 +7,6 @@ Gem::Specification.new do |s|
   s.description = 'A simple Ruby library for parsing plain text into a node-based structure'
   s.author      = 'Daniel Tao'
   s.email       = 'daniel.tao@gmail.com'
-  s.files       = FileList['src/**/*'].to_a
+  s.files       = FileList['lib/**/*'].to_a
   s.homepage    = 'http://github.com/dtao/nodifier'
 end
