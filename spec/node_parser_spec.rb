@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../src/node_parser'
+require File.dirname(__FILE__) + '/../lib/node_parser'
 
 describe NodeParser do
 

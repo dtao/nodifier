@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../src/nodifier'
+require File.dirname(__FILE__) + '/../lib/nodifier'
 
 describe Nodifier do
 

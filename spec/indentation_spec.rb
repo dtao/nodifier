@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../src/indentation'
+require File.dirname(__FILE__) + '/../lib/indentation'
 
 describe Indentation do
 
