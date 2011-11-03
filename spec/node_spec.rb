@@ -35,7 +35,7 @@ describe Node do
                c
         EOS
 
-        nodes[0].to_s.should == "foo\n  bar\n    buzz\n      a\n        b\n          c"
+        nodes.to_s.should == "foo\n  bar\n    buzz\n      a\n        b\n          c"
       end
 
       it 'accepts a formatter block with which to format each node' do
@@ -52,17 +52,16 @@ describe Node do
 
       it 'works for a mixture of formatters' do
         nodes = Nodifier.new.nodify <<-EOS
-          root
+          foo
+            bar
+          xml
             foo
               bar
-            xml
-              foo
-                bar
-            foo
-              bar
+          foo
+            bar
         EOS
 
-        output = nodes[0].to_s do |node, state|
+        output = nodes.to_s do |node, state|
           if node.label == 'xml'
             state.children_are_formatted!
             node.to_xml
@@ -71,7 +70,7 @@ describe Node do
           end
         end
 
-        output.should == "root\n  foo\n    bar\n  <xml>\n    <foo>\n      <bar />\n    </foo>\n  </xml>\n  foo\n    bar"
+        output.should == "foo\n  bar\n<xml>\n  <foo>\n    <bar />\n  </foo>\n</xml>\nfoo\n  bar"
       end
     end
   end

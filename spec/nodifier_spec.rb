@@ -28,7 +28,7 @@ describe Nodifier do
   end
 
   describe '@nodify' do
-    it 'converts a String to an array of Node objects' do
+    it 'converts a String to a Nodes object' do
       nodes = @nodifier.nodify <<-EOS
         foo
           bar

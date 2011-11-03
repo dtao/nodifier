@@ -10,7 +10,7 @@ class Nodifier
   end
 
   def nodify(content)
-    nodes = []
+    nodes = Nodes.new
     current_node = nil
     child_content = ''
 

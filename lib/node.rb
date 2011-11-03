@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + '/indentation'
+require File.dirname(__FILE__) + '/nodes'
 require File.dirname(__FILE__) + '/formatter_state'
 require File.dirname(__FILE__) + '/xml_node_formatter'
 
@@ -12,7 +13,7 @@ class Node
 
   def initialize(label)
     @label = label
-    @children = []
+    @children = Nodes.new
   end
 
   def to_s(indent_level = 0, &formatter_block)
@@ -29,10 +30,8 @@ class Node
     end
 
     unless state.formatted_children?
-      @children.each do |child|
-        s << "\n"
-        s << child.to_s(indent_level + 1, &formatter_block)
-      end
+      s << "\n" unless @children.empty?
+      s << @children.to_s(indent_level + 1, &formatter_block)
     end
 
     s
