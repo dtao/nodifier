@@ -2,7 +2,7 @@ require 'rake'
 
 Gem::Specification.new do |s|
   s.name        = 'nodifier'
-  s.version     = '0.1.0'
+  s.version     = '0.1.2'
   s.summary     = 'Nodifier, for parsing text into nodes'
   s.description = 'A simple Ruby library for parsing plain text into a node-based structure'
   s.author      = 'Daniel Tao'

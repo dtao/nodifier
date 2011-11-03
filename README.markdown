@@ -39,16 +39,16 @@ foo
 ...*nodifier* will parse this as an array of `Node` objects with the following structure (expressed below as XML for no particular reason):
 
 ```xml
-<node label="foo">
-  <node label="bar">
-    <node label="a" />
-    <node label="b" />
-    <node label="c" />
-  </node>
-  <node label="buzz">
-    <node label="x" />
-    <node label="y" />
-    <node label="z" />
-  </node>
-</node>
+<foo>
+  <bar>
+    <a />
+    <b />
+    <c />
+  </bar>
+  <buzz>
+    <x />
+    <y />
+    <z />
+  </buzz>
+</foo>
 ```
