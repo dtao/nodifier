@@ -32,6 +32,10 @@ describe Indentation do
       indent('foo', 2).should == '    foo'
     end
 
+    it 'adds no space if the specified indent level is 0' do
+      indent('foo', 0).should == 'foo'
+    end
+
   end
 
 end

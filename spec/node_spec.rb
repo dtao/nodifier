@@ -1,5 +1,6 @@
 require File.dirname(__FILE__) + '/../lib/node'
 require File.dirname(__FILE__) + '/../lib/nodifier'
+require File.dirname(__FILE__) + '/matchers'
 
 describe Node do
 
@@ -22,7 +23,11 @@ describe Node do
       end
 
       it 'returns an indented list comprising the label of the node and those of its children' do
-        @node.to_s.should == "foo\n  bar\n  buzz"
+        @node.to_s.should be_like_block <<-EOS
+          foo
+            bar
+            buzz
+        EOS
       end
 
       it 'works for any arbitrary amount of nesting' do
@@ -35,11 +40,22 @@ describe Node do
                c
         EOS
 
-        nodes.to_s.should == "foo\n  bar\n    buzz\n      a\n        b\n          c"
+        nodes.to_s.should be_like_block <<-EOS
+          foo
+            bar
+              buzz
+                a
+                  b
+                    c
+        EOS
       end
 
       it 'accepts a formatter block with which to format each node' do
-        @node.to_s { |node| 'blah' }.should == "blah\n  blah\n  blah"
+        @node.to_s { |node| 'blah' }.should be_like_block <<-EOS
+          blah
+            blah
+            blah
+        EOS
       end
 
       it 'allows the formatter block to prevent further formatting of the children of a node (in case the formatter already handled that)' do
@@ -47,7 +63,11 @@ describe Node do
       end
 
       it 'passes the node itself (not an array) to the formatter block if the block takes one parameter' do
-        @node.to_s { |node| node.is_a?(Node).to_s }.should == "true\n  true\n  true"
+        @node.to_s { |node| node.is_a?(Node).to_s }.should be_like_block <<-EOS
+          true
+            true
+            true
+        EOS
       end
 
       it 'works for a mixture of formatters' do
@@ -70,7 +90,17 @@ describe Node do
           end
         end
 
-        output.should == "foo\n  bar\n<xml>\n  <foo>\n    <bar />\n  </foo>\n</xml>\nfoo\n  bar"
+        output.should be_like_block <<-EOS
+          foo
+            bar
+          <xml>
+            <foo>
+              <bar />
+            </foo>
+          </xml>
+          foo
+            bar
+        EOS
       end
     end
   end
@@ -81,7 +111,12 @@ describe Node do
       node.children << Node.new('bar')
       node.children << Node.new('buzz')
 
-      node.to_xml.should == "<foo>\n  <bar />\n  <buzz />\n</foo>"
+      node.to_xml.should be_like_block <<-EOS
+        <foo>
+          <bar />
+          <buzz />
+        </foo>
+      EOS
     end
   end
 
