@@ -26,7 +26,7 @@ describe Node do
       end
 
       it 'works for any arbitrary amount of nesting' do
-        @node = Nodifier.new.nodify <<-EOS
+        nodes = Nodifier.new.nodify <<-EOS
           foo
            bar
             buzz
@@ -35,7 +35,7 @@ describe Node do
                c
         EOS
 
-        @node.to_s.should == "foo\n  bar\n    buzz\n      a\n        b\n          c"
+        nodes[0].to_s.should == "foo\n  bar\n    buzz\n      a\n        b\n          c"
       end
 
       it 'accepts a formatter block with which to format each node' do
@@ -43,11 +43,35 @@ describe Node do
       end
 
       it 'allows the formatter block to prevent further formatting of the children of a node (in case the formatter already handled that)' do
-        @node.to_s { |node, stopper| stopper.stop!; 'blah' }.should == 'blah'
+        @node.to_s { |node, state| state.children_are_formatted!; 'blah' }.should == 'blah'
       end
 
       it 'passes the node itself (not an array) to the formatter block if the block takes one parameter' do
         @node.to_s { |node| node.is_a?(Node).to_s }.should == "true\n  true\n  true"
+      end
+
+      it 'works for a mixture of formatters' do
+        nodes = Nodifier.new.nodify <<-EOS
+          root
+            foo
+              bar
+            xml
+              foo
+                bar
+            foo
+              bar
+        EOS
+
+        output = nodes[0].to_s do |node, state|
+          if node.label == 'xml'
+            state.children_are_formatted!
+            node.to_xml
+          else
+            node.label
+          end
+        end
+
+        output.should == "root\n  foo\n    bar\n  <xml>\n    <foo>\n      <bar />\n    </foo>\n  </xml>\n  foo\n    bar"
       end
     end
   end

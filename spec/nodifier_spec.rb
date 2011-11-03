@@ -48,6 +48,28 @@ describe Nodifier do
       ]
     end
 
+    it 'works for multiple top-level nodes' do
+      nodes = @nodifier.nodify <<-EOS
+        foo
+          bar
+        foo
+          bar
+      EOS
+
+      nodes_should_match nodes, [
+        {
+          'foo' => [
+            { 'bar' => [] }
+          ]
+        },
+        {
+          'foo' => [
+            { 'bar' => [] }
+          ]
+        }
+      ]
+    end
+
     it 'uses a custom parser, if one is supplied' do
       class AlwaysBobNodeParser < NodeParser
         def parse(text)

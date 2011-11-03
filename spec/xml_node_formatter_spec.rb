@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../lib/xml_node_formatter'
+require File.dirname(__FILE__) + '/../lib/node'
 
 describe XmlNodeFormatter do
 
