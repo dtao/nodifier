@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + '/indentation'
+require File.dirname(__FILE__) + '/stopper'
 require File.dirname(__FILE__) + '/xml_node_formatter'
 
 class Node
@@ -19,11 +20,19 @@ class Node
       return to_s(indent_level) { |node| node.label }
     end
 
-    s = indent(formatter_block.call(self), indent_level)
+    stopper = Stopper.new
+    case formatter_block.arity
+    when 1:
+      s = indent(formatter_block.call(self), indent_level)
+    when 2:
+      s = indent(formatter_block.call([self, stopper]), indent_level)
+    end
 
-    @children.each do |child|
-      s << "\n"
-      s << child.to_s(indent_level + 1, &formatter_block)
+    unless stopper.stopped?
+      @children.each do |child|
+        s << "\n"
+        s << child.to_s(indent_level + 1, &formatter_block)
+      end
     end
 
     s

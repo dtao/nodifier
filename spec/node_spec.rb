@@ -9,7 +9,7 @@ describe Node do
         @node = Node.new 'foo'
       end
 
-      it 'returns the node\'s label' do
+      it 'returns the label of the node' do
         @node.to_s.should == 'foo'
       end
     end
@@ -21,7 +21,7 @@ describe Node do
         @node.children << Node.new('buzz')
       end
 
-      it 'returns an indented list comprising the node\'s label and child nodes\' labels' do
+      it 'returns an indented list comprising the label of the node and those of its children' do
         @node.to_s.should == "foo\n  bar\n  buzz"
       end
 
@@ -38,8 +38,16 @@ describe Node do
         @node.to_s.should == "foo\n  bar\n    buzz\n      a\n        b\n          c"
       end
 
-      it 'can accept a formatter block with which to format each node' do
+      it 'accepts a formatter block with which to format each node' do
         @node.to_s { |node| 'blah' }.should == "blah\n  blah\n  blah"
+      end
+
+      it 'allows the formatter block to prevent further formatting of the children of a node (in case the formatter already handled that)' do
+        @node.to_s { |node, stopper| stopper.stop!; 'blah' }.should == 'blah'
+      end
+
+      it 'passes the node itself (not an array) to the formatter block if the block takes one parameter' do
+        @node.to_s { |node| node.is_a?(Node).to_s }.should == "true\n  true\n  true"
       end
     end
   end
