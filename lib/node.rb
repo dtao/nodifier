@@ -22,9 +22,9 @@ class Node
 
     state = FormatterState.new
     case formatter_block.arity
-    when 1:
+    when 1
       s = indent(formatter_block.call(self), indent_level)
-    when 2:
+    when 2
       s = indent(formatter_block.call([self, state]), indent_level)
     end
 
