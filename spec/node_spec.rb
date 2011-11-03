@@ -46,7 +46,7 @@ describe Node do
       node.children << Node.new('bar')
       node.children << Node.new('buzz')
 
-      
+      node.to_xml.should == "<foo>\n  <bar />\n  <buzz />\n</foo>"
     end
   end
 
