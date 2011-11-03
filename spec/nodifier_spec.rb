@@ -28,7 +28,11 @@ describe Nodifier do
   end
 
   describe '@nodify' do
-    it 'converts a String to a Nodes object' do
+    it 'produces a Nodes object' do
+      @nodifier.nodify('foo').should be_a(Nodes)
+    end
+
+    it 'converts a String to an array whose structure matches that of the text' do
       nodes = @nodifier.nodify <<-EOS
         foo
           bar
