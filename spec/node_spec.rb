@@ -37,6 +37,10 @@ describe Node do
 
         @node.to_s.should == "foo\n  bar\n    buzz\n      a\n        b\n          c"
       end
+
+      it 'can accept a formatter block with which to format each node' do
+        @node.to_s { |node| 'blah' }.should == "blah\n  blah\n  blah"
+      end
     end
   end
   

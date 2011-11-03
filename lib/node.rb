@@ -14,12 +14,16 @@ class Node
     @children = []
   end
 
-  def to_s(indent_level = 0)
-    s = indent(@label, indent_level)
+  def to_s(indent_level = 0, &formatter_block)
+    if not block_given?
+      return to_s(indent_level) { |node| node.label }
+    end
+
+    s = indent(formatter_block.call(self), indent_level)
 
     @children.each do |child|
       s << "\n"
-      s << indent(child.to_s, indent_level + 1)
+      s << child.to_s(indent_level + 1, &formatter_block)
     end
 
     s
