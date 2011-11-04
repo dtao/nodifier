@@ -55,6 +55,7 @@ content = <<-EOS
   foo
     bar: bar_value
     buzz: buzz_value
+EOS
 
 nodes = nodifier.nodify content
 ```
