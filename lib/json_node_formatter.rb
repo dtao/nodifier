@@ -19,7 +19,7 @@ class JsonNodeFormatter
   def format_single_node(node, indent_level = 0)
     key, value = node.label.split(/:\s*/)
 
-    return indent("\"#{key}\": \"#{value || 'null'}\"", indent_level) if node.children.empty?
+    return indent("\"#{key}\": #{value_or_null(value)}", indent_level) if node.children.empty?
 
     json = indent("\"#{key}\": {", indent_level)
 
@@ -35,5 +35,10 @@ class JsonNodeFormatter
     json << indent("}", indent_level)
 
     json
+  end
+
+  def value_or_null(value)
+    return 'null' if value.nil?
+    "\"#{value}\""
   end
 end

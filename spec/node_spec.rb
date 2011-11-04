@@ -104,6 +104,23 @@ describe Node do
       end
     end
   end
+
+  describe '#to_json' do
+    it 'renders the node the same as JsonNodeFormatter' do
+      node = Node.new 'foo'
+      node.children << Node.new('bar')
+      node.children << Node.new('buzz')
+
+      node.to_json.should be_like_block <<-EOS
+        {
+          "foo": {
+            "bar": null,
+            "buzz": null
+          }
+        }
+      EOS
+    end
+  end
   
   describe '#to_xml' do
     it 'renders the node the same as XmlNodeFormatter' do

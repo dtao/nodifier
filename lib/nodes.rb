@@ -1,12 +1,13 @@
 class Nodes < Array
   def to_s(indent_level = 0, &formatter_block)
-    s = ''
+    map { |node| node.to_s(indent_level, &formatter_block) }.join("\n")
+  end
 
-    each do |node|
-      s << "\n" unless s.empty?
-      s << node.to_s(indent_level, &formatter_block)
-    end
+  def to_json
+    map { |node| node.to_json }.join("\n")
+  end
 
-    s
+  def to_xml
+    map { |node| node.to_xml }.join("\n")
   end
 end
