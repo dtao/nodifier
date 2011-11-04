@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + '/../lib/node'
+require File.dirname(__FILE__) + '/matchers'
 
 describe XmlNodeFormatter do
 
@@ -10,22 +11,40 @@ describe XmlNodeFormatter do
 
   describe '#format' do
     before :each do
-      @node = Node.new 'foo'
-      @node.children << Node.new('bar')
-      @node.children << Node.new('buzz')
+      @nodes = Nodes.new
+
+      @first_node = Node.new 'foo'
+      @first_node.children << Node.new('bar')
+      @first_node.children << Node.new('buzz')
+
+      @second_node = Node.new 'a'
+      @second_node.children << Node.new('b')
+      @second_node.children << Node.new('c')
+
+      @nodes << @first_node
+      @nodes << @second_node
     end
 
     it 'creates an XML document with elements whose tags are the labels of the given node structure' do
-      expected = <<-EOS
+      @formatter.format(@nodes).should be_like_block <<-EOS
+        <foo>
+          <bar />
+          <buzz />
+        </foo>
+        <a>
+          <b />
+          <c />
+        </a>
+      EOS
+    end
+
+    it 'works for individual nodes just as well as node arrays' do
+      @formatter.format(@first_node).should be_like_block <<-EOS
         <foo>
           <bar />
           <buzz />
         </foo>
       EOS
-
-      expected = unindent(expected).strip
-
-      @formatter.format(@node).should == expected
     end
   end
 

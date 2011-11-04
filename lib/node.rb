@@ -2,10 +2,12 @@ require File.dirname(__FILE__) + '/indentation'
 require File.dirname(__FILE__) + '/nodes'
 require File.dirname(__FILE__) + '/formatter_state'
 require File.dirname(__FILE__) + '/xml_node_formatter'
+require File.dirname(__FILE__) + '/json_node_formatter'
 
 class Node
   include Indentation
 
+  @@json_formatter = JsonNodeFormatter.new
   @@xml_formatter = XmlNodeFormatter.new
 
   attr_reader :label
@@ -35,6 +37,10 @@ class Node
     end
 
     s
+  end
+
+  def to_json
+    @@json_formatter.format self
   end
 
   def to_xml
